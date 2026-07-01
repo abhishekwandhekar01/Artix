@@ -416,7 +416,7 @@ export function ModulesPageContent() {
             <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
               {modules.map((mod, i) => {
                 const Icon = MODULE_ICONS[mod.id as keyof typeof MODULE_ICONS] || Building2;
-                const img = MODULE_IMAGES[mod.id] || MODULE_IMAGES.hospital;
+                const img = MODULE_IMAGES[mod.id as keyof typeof MODULE_IMAGES] || MODULE_IMAGES.hospital;
                 return (
                   <motion.a
                     key={mod.id}
@@ -465,7 +465,7 @@ export function ModulesPageContent() {
           <div className="space-y-16 lg:space-y-20">
             {modules.map((mod, i) => {
               const Icon = MODULE_ICONS[mod.id as keyof typeof MODULE_ICONS] || Building2;
-              const img = MODULE_IMAGES[mod.id] || MODULE_IMAGES.hospital;
+              const img = MODULE_IMAGES[mod.id as keyof typeof MODULE_IMAGES] || MODULE_IMAGES.hospital;
               const reversed = i % 2 === 1;
 
               return (
