@@ -7,26 +7,79 @@ import { SafeImage } from "@/components/ui/safe-image";
 import { WaveDivider } from "@/components/ui/wave-divider";
 import { FloatingShapes } from "@/components/ui/floating-shapes";
 import { HeroBackground } from "@/components/home/hero-background";
-import { heroFeatures, images, siteConfig } from "@/lib/constants";
+import { images, siteConfig } from "@/lib/constants";
 import { useAnchorScroll } from "@/hooks/use-anchor-scroll";
 import { useMounted } from "@/hooks/use-mounted";
+import Logo from "@/app/icon.png";
 import {
+  ArrowLeft,
   ArrowRight,
-  CheckCircle2,
   Download,
   HeartPulse,
   Play,
   Shield,
   Sparkles,
   TrendingUp,
+  FileText,
+  FolderOpen,
+  Activity,
+  CreditCard,
+  TriangleAlert,
+  ChevronDown,
 } from "lucide-react";
 
+const clinicChallenges = [
+  { icon: FileText, title: "Patient Registration" },
+  { icon: FolderOpen, title: "Fragmented Records" },
+  { icon: Activity, title: "Manual IVF Cycle" },
+  { icon: HeartPulse, title: "Embryology" },
+  { icon: CreditCard, title: "Billing & Consent" },
+  {
+    icon: TriangleAlert,
+    title: "Revenue Loss",
+    danger: true,
+  },
+];
 const heroStats = [
   { v: "523+", l: "Clinics" },
   { v: "877+", l: "Appts/mo" },
   { v: "98%", l: "Satisfied" },
 ];
+function ChallengeCard({
+  icon: Icon,
+  title,
+  danger = false,
+}: {
+  icon: any;
+  title: string;
+  danger?: boolean;
+}) {
+  return (
+    <div
+      className={`flex items-center gap-2 rounded-xl border px-3 py-2 shadow-md backdrop-blur-sm
+      ${danger
+          ? "border-red-200 bg-red-50"
+          : "border-primary/10 bg-white/90"
+        }`}
+    >
+      <div
+        className={`rounded-lg p-1.5 ${danger
+          ? "bg-red-100 text-red-600"
+          : "bg-primary/10 text-primary"
+          }`}
+      >
+        <Icon size={15} />
+      </div>
 
+      <span
+        className={`text-xs font-medium whitespace-nowrap ${danger ? "text-red-600" : "text-text"
+          }`}
+      >
+        {title}
+      </span>
+    </div>
+  );
+}
 export function Hero() {
   const { handleNavClick } = useAnchorScroll();
   const mounted = useMounted();
@@ -44,36 +97,69 @@ export function Hero() {
             transition={{ duration: 0.65 }}
             className="lg:pt-2"
           >
-            <span className="eyebrow-brand">
-              <HeartPulse className="h-3.5 w-3.5" />
-              {siteConfig.name} · {siteConfig.tagline}
+            <span className="eyebrow-brand flex items-center gap-2">
+              <SafeImage
+                src={Logo}
+                alt="Logo"
+                width={60}
+                height={60}
+                className="rounded-sm"
+              />
+
+              <span>
+                  ♦ {siteConfig.tagline}
+              </span>
             </span>
 
             <h1 className="mt-5 text-balance text-[2rem] font-extrabold leading-[1.05] sm:text-5xl xl:text-[3.4rem]">
-              India&apos;s Most Complete{" "}
-              <span className="gradient-text">IVF Management Software</span>
+              The Biggest Challenges{" "}
+              <span className="gradient-text">IVF Clinics Face Every Day</span>
             </h1>
 
-            <p className="mt-5 max-w-xl text-base leading-relaxed text-gray sm:text-lg">
-              <strong className="font-semibold text-text">ARTiX</strong> is the cloud platform that sells
-              itself — unifying patient registration, IVF cycles, embryology, billing, consent,
-              and reports for fertility clinics that refuse to compromise on care or revenue.
-            </p>
+            <div className="mt-6 flex flex-col gap-4">
 
-            <div className="mt-7 grid gap-2.5 sm:grid-cols-2">
-              {heroFeatures.map((f, i) => (
-                <motion.div
-                  key={f}
-                  initial={false}
-                  animate={mounted ? { opacity: 1, x: 0 } : undefined}
-                  transition={{ delay: 0.12 + i * 0.07 }}
-                  className="flex items-start gap-2.5 rounded-xl border border-primary/10 bg-white/90 px-3.5 py-3 shadow-sm backdrop-blur-sm"
-                >
-                  <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-primary" />
-                  <span className="text-sm font-medium text-text">{f}</span>
-                </motion.div>
-              ))}
+              {/* Top Row */}
+              <div className="flex items-center justify-between gap-2">
+
+                <ChallengeCard {...clinicChallenges[0]} />
+
+                <ArrowRight className="h-4 w-4 text-primary shrink-0" />
+
+                <ChallengeCard {...clinicChallenges[1]} />
+
+                <ArrowRight className="h-4 w-4 text-primary shrink-0" />
+
+                <ChallengeCard {...clinicChallenges[2]} />
+
+              </div>
+
+              {/* Turn */}
+              <div className="flex justify-end pr-10">
+                <ChevronDown className="h-5 w-5 text-primary" />
+              </div>
+
+              {/* Bottom Row */}
+              <div className="flex items-center justify-between gap-2">
+
+                <ChallengeCard
+                  icon={TriangleAlert}
+                  title="Revenue Loss"
+                  danger
+                />
+
+                <ArrowLeft className="h-4 w-4 text-primary shrink-0" />
+
+                <ChallengeCard {...clinicChallenges[4]} />
+
+                <ArrowLeft className="h-4 w-4 text-primary shrink-0" />
+
+                <ChallengeCard {...clinicChallenges[3]} />
+
+              </div>
+
             </div>
+
+
 
             <div className="mt-8 flex flex-wrap gap-3">
               <Button size="lg" asChild>
@@ -93,7 +179,7 @@ export function Hero() {
               </Button>
             </div>
 
-            <div className="mt-6 flex flex-wrap items-center gap-4 text-xs font-semibold text-muted">
+            <div className="mt-6 flex flex-wrap items-center gap-4 text-xs text-sm font-medium text-muted">
               <span className="flex items-center gap-1.5">
                 <Shield className="h-3.5 w-3.5 text-primary" /> DISHA Compliant
               </span>

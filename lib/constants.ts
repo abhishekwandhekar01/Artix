@@ -2,7 +2,7 @@ import { moduleImages, unsplash, unsplashImages } from "./images";
 
 export const siteConfig = {
   name: "ARTiX",
-  tagline: "Transformation for Sure",
+  tagline: "One Platform for Every IVF Journey",
   description:
     "ARTiX is a comprehensive cloud-based IVF management platform that unifies patient care, embryology workflows, billing, and clinic operations for fertility centers and hospitals.",
   url: "https://artix.io",
@@ -73,10 +73,10 @@ export const videos = [
 export { downloadCardImages, heroVideoSrc, unsplashImages as images } from "./images";
 
 export const heroFeatures = [
-  "Complete patient journey — registration to pregnancy tracking",
-  "IVF Cycle Navigator with embryology lab integration",
-  "Automated billing, consent forms & digital reports",
-  "Multi-branch cloud platform with role-based security",
+  "Patient records scattered across multiple systems",
+  "Manual IVF cycle and embryology tracking",
+  "Time-consuming billing, consent, and documentation",
+  "Difficulty managing multiple branches and staff access",
 ];
 
 /** Full patient journey architecture — powers the animated workflow UI */
