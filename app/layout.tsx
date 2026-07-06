@@ -1,12 +1,13 @@
 import type { Metadata } from "next";
 import { Plus_Jakarta_Sans } from "next/font/google";
-import "@/styles/globals.css";
 import { Navigation } from "@/components/layout/navigation";
 import { Footer } from "@/components/layout/footer";
+import "@/styles/globals.css"
 import { StickyCTA } from "@/components/layout/sticky-cta";
 import { ArtixChatbot } from "@/components/chatbot/artix-chatbot";
 import { HashScrollHandler } from "@/components/providers/hash-scroll-handler";
 import { siteConfig } from "@/lib/constants";
+import LayoutWrapper from "@/components/layout/LayoutWrapper";
 import {
   generateOrganizationSchema,
   generateWebSiteSchema,
@@ -96,13 +97,16 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(webSchema) }}
         />
       </head>
-      <body className="min-h-screen overflow-x-hidden bg-background font-sans text-text antialiased" suppressHydrationWarning>
+      <body
+        className="min-h-screen overflow-x-hidden bg-background font-sans text-text antialiased"
+        suppressHydrationWarning
+      >
         <HashScrollHandler />
-        <Navigation />
-        <main>{children}</main>
-        <Footer />
-        <StickyCTA />
-        <ArtixChatbot />
+
+        <LayoutWrapper>
+          {children}
+        </LayoutWrapper>
+
       </body>
     </html>
   );
