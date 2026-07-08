@@ -10,37 +10,66 @@ export function useAnchorScroll() {
 
   const scrollToSection = useCallback((hash: string) => {
     const id = hash.replace(/^#/, "");
+
     if (!id) {
-      window.scrollTo({ top: 0, behavior: "smooth" });
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth",
+      });
       return;
     }
 
-    const el = document.getElementById(id);
-    if (!el) return;
+    const element = document.getElementById(id);
 
-    const top = el.getBoundingClientRect().top + window.scrollY - HEADER_OFFSET;
-    window.scrollTo({ top, behavior: "smooth" });
+    if (!element) return;
+
+    const headerOffset =
+      window.innerWidth < 640 ? 72 : HEADER_OFFSET;
+
+    const top =
+      element.getBoundingClientRect().top +
+      window.pageYOffset -
+      headerOffset;
+
+    window.scrollTo({
+      top,
+      behavior: "smooth",
+    });
   }, []);
 
   const handleNavClick = useCallback(
-    (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+    (
+      e: React.MouseEvent<HTMLAnchorElement>,
+      href: string
+    ) => {
       if (!href.includes("#")) return;
 
       const [path, hash] = href.split("#");
       const targetPath = path || "/";
-      const isSamePage = targetPath === window.location.pathname;
+
+      const isSamePage =
+        targetPath === window.location.pathname;
 
       if (isSamePage && hash) {
         e.preventDefault();
+
         scrollToSection(`#${hash}`);
-        window.history.pushState(null, "", `#${hash}`);
-      } else if (hash && !isSamePage) {
+
+        window.history.replaceState(
+          null,
+          "",
+          `#${hash}`
+        );
+      } else if (hash) {
         e.preventDefault();
         router.push(`${targetPath}#${hash}`);
       }
     },
-    [scrollToSection, router]
+    [router, scrollToSection]
   );
 
-  return { scrollToSection, handleNavClick };
+  return {
+    scrollToSection,
+    handleNavClick,
+  };
 }

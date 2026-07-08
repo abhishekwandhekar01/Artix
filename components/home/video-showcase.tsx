@@ -12,6 +12,7 @@ import { cn } from "@/lib/utils";
 export function VideoShowcase() {
   const [active, setActive] = useState(0);
   const [playing, setPlaying] = useState(false);
+
   const current = videos[active];
 
   const selectVideo = (index: number) => {
@@ -21,7 +22,7 @@ export function VideoShowcase() {
 
   return (
     <section id="videos" className="section-white">
-      <div className="container-wide section-padding">
+      <div className="container-wide px-4 sm:px-6 lg:px-8 section-padding">
         <MotionSection>
           <SectionHeader
             eyebrow="Product Videos"
@@ -30,6 +31,7 @@ export function VideoShowcase() {
           />
 
           <div className="grid gap-8 lg:grid-cols-5 lg:gap-10">
+            {/* Main Video */}
             <div className="lg:col-span-3">
               <YouTubePlayer
                 key={current.youtubeId}
@@ -39,49 +41,72 @@ export function VideoShowcase() {
                 playing={playing}
                 onPlay={() => setPlaying(true)}
               />
-              <div className="mt-5 flex gap-3 rounded-xl border border-slate-100 bg-slate-50/80 p-5">
+
+              <div className="mt-5 flex gap-3 rounded-xl border border-slate-100 bg-slate-50/80 p-4 sm:p-5">
                 <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-primary/10">
                   <Video className="h-5 w-5 text-primary" />
                 </div>
+
                 <div>
-                  <h3 className="font-bold text-text">{current.title}</h3>
-                  <p className="mt-1 text-sm leading-relaxed text-gray">{current.description}</p>
+                  <h3 className="text-base font-bold text-text sm:text-lg">
+                    {current.title}
+                  </h3>
+
+                  <p className="mt-2 text-sm leading-relaxed text-gray">
+                    {current.description}
+                  </p>
                 </div>
               </div>
             </div>
 
-            <div className="flex flex-col gap-2.5 lg:col-span-2">
-              <p className="text-[11px] font-bold uppercase tracking-widest text-muted">Select video</p>
+            {/* Playlist */}
+            <div className="flex flex-col gap-3 lg:col-span-2">
+              <p className="text-[10px] font-bold uppercase tracking-[0.15em] text-muted sm:text-[11px] sm:tracking-widest">
+                Select video
+              </p>
+
               {videos.map((video, i) => (
                 <button
                   key={video.id}
                   type="button"
                   onClick={() => selectVideo(i)}
                   className={cn(
-                    "flex gap-3 rounded-xl border p-2.5 text-left transition-all",
+                    "flex items-center gap-3 rounded-xl border p-3 text-left transition-all",
                     active === i
                       ? "border-primary/30 bg-primary/5 shadow-md"
                       : "border-slate-200 bg-white hover:border-primary/20"
                   )}
                 >
-                  <div className="relative h-16 w-24 shrink-0 overflow-hidden rounded-lg bg-slate-200">
+                  <div className="relative h-20 w-28 shrink-0 overflow-hidden rounded-lg bg-slate-200 sm:h-16 sm:w-24">
                     <Image
                       src={video.thumbnail}
                       alt=""
                       fill
                       unoptimized
                       className="object-cover"
-                      sizes="96px"
+                      sizes="(max-width:640px) 112px, 96px"
                     />
+
                     <div className="absolute inset-0 flex items-center justify-center bg-text/30">
-                      <Play className="h-3 w-3 fill-white text-white" />
+                      <Play className="h-4 w-4 fill-white text-white sm:h-3 sm:w-3" />
                     </div>
                   </div>
-                  <div className="py-0.5">
-                    <p className={cn("text-sm font-bold", active === i ? "text-primary" : "text-text")}>
+
+                  <div className="min-w-0 flex-1 py-0.5">
+                    <p
+                      className={cn(
+                        "text-sm font-bold break-words",
+                        active === i
+                          ? "text-primary"
+                          : "text-text"
+                      )}
+                    >
                       {video.title}
                     </p>
-                    <p className="mt-0.5 line-clamp-2 text-xs text-gray">{video.description}</p>
+
+                    <p className="mt-1 line-clamp-2 text-xs leading-relaxed text-gray">
+                      {video.description}
+                    </p>
                   </div>
                 </button>
               ))}
@@ -89,6 +114,7 @@ export function VideoShowcase() {
           </div>
         </MotionSection>
       </div>
+
       <WaveDivider color="background" height="sm" />
     </section>
   );

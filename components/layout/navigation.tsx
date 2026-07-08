@@ -36,10 +36,10 @@ export function Navigation() {
             : "border-b border-transparent bg-white/90 py-2.5 backdrop-blur-md"
         )}
       >
-        <div className="container-wide flex h-14 items-center justify-between gap-6">
+        <div className="container-wide flex h-14 items-center justify-between gap-4 px-4 sm:px-6 lg:gap-6 lg:px-8">
           <BrandLogo onClick={() => setMobileOpen(false)} />
 
-          <nav className="hidden items-center gap-0.5 lg:flex" aria-label="Main">
+          <nav className="hidden items-center gap-0 lg:flex" aria-label="Main">
             {navLinks.map((link) => {
               const isActive =
                 link.href === "/"

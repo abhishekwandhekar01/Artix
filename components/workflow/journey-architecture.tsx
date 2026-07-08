@@ -236,7 +236,7 @@ export function JourneyArchitecture() {
                 className="overflow-hidden rounded-2xl border border-white/10 bg-white/5 shadow-2xl backdrop-blur-md"
               >
                 {/* Image — clear, bright, no heavy overlay */}
-                <div className="relative h-56 sm:h-72 lg:h-80">
+                <div className="relative h-52 sm:h-64 md:h-72 lg:h-80">
                   <JourneyImage src={imageSrc} alt={current.title} />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/15 to-transparent" />
                   <div className="absolute left-4 top-4">
@@ -257,7 +257,7 @@ export function JourneyArchitecture() {
                 </div>
 
                 <div className="p-5 sm:p-7">
-                  <p className="leading-relaxed text-white/80">{current.description}</p>
+                  <p className="max-w-3xl leading-relaxed text-white/80">{current.description}</p>
                   <div className="mt-5 inline-flex items-center gap-2 rounded-xl border border-primary-light/30 bg-primary/25 px-4 py-2.5 text-sm font-semibold text-primary-light">
                     <StepIcon name={current.icon} />
                     {current.highlight}

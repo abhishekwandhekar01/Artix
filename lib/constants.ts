@@ -40,6 +40,7 @@ export const navLinks = [
   { label: "Features", href: "/#features" },
   { label: "Workflow", href: "/#workflow" },
   { label: "Videos", href: "/#videos" },
+  { label: "Careers", href: "/careers" },
   { label: "Contact", href: "/contact" },
 ];
 

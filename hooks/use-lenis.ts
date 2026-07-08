@@ -9,16 +9,23 @@ gsap.registerPlugin(ScrollTrigger);
 
 export function useLenis() {
   useEffect(() => {
+    // Disable smooth scroll on touch devices
+    const isTouch =
+      "ontouchstart" in window || navigator.maxTouchPoints > 0;
+
+    if (isTouch) return;
+
     const lenis = new Lenis({
       duration: 1.2,
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       smoothWheel: true,
+      syncTouch: false,
     });
 
     lenis.on("scroll", ScrollTrigger.update);
 
     const raf = (time: number) => {
-      lenis.raf(time);
+      lenis.raf(time * 1000);
     };
 
     gsap.ticker.add(raf);
@@ -26,6 +33,7 @@ export function useLenis() {
 
     return () => {
       gsap.ticker.remove(raf);
+      lenis.off("scroll", ScrollTrigger.update);
       lenis.destroy();
     };
   }, []);
