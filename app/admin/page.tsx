@@ -1,165 +1,266 @@
 "use client";
 
+import { useEffect, useState } from "react";
+import api from "@/lib/axios";
 import {
   Users,
   PhoneCall,
   CalendarCheck,
   BadgeCheck,
+  ArrowUpRight,
 } from "lucide-react";
 
-const stats = [
-  {
-    title: "Total Leads",
-    value: 126,
-    icon: Users,
-    color: "bg-blue-500",
-  },
-  {
-    title: "Contacted",
-    value: 72,
-    icon: PhoneCall,
-    color: "bg-yellow-500",
-  },
-  {
-    title: "Demo Scheduled",
-    value: 31,
-    icon: CalendarCheck,
-    color: "bg-purple-500",
-  },
-  {
-    title: "Closed",
-    value: 18,
-    icon: BadgeCheck,
-    color: "bg-green-500",
-  },
-];
+type DashboardStats = {
+  total: number;
+  newLeads: number;
+  contacted: number;
+  demoScheduled: number;
+  closed: number;
+};
 
-const recentLeads = [
-  {
-    name: "Abhishek",
-    hospital: "Apollo",
-    status: "New",
-  },
-  {
-    name: "Krishna",
-    hospital: "Ruby Hall",
-    status: "Contacted",
-  },
-  {
-    name: "Rahul",
-    hospital: "AIIMS",
-    status: "Demo Scheduled",
-  },
-  {
-    name: "Sneha",
-    hospital: "Fortis",
-    status: "Closed",
-  },
-];
+type Inquiry = {
+  _id: string;
+  name: string;
+  hospital: string;
+  status: string;
+};
 
 const badge = (status: string) => {
   switch (status) {
     case "New":
-      return "bg-blue-100 text-blue-700";
+      return "bg-cyan-100 text-cyan-700";
+
     case "Contacted":
       return "bg-yellow-100 text-yellow-700";
+
     case "Demo Scheduled":
       return "bg-purple-100 text-purple-700";
+
     case "Closed":
-      return "bg-green-100 text-green-700";
+      return "bg-emerald-100 text-emerald-700";
+
     default:
-      return "bg-gray-100";
+      return "bg-slate-100 text-slate-600";
   }
 };
 
 export default function DashboardPage() {
+  const [stats, setStats] = useState<DashboardStats>({
+    total: 0,
+    newLeads: 0,
+    contacted: 0,
+    demoScheduled: 0,
+    closed: 0,
+  });
+
+  const [recentLeads, setRecentLeads] = useState<Inquiry[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    loadDashboard();
+  }, []);
+
+  const loadDashboard = async () => {
+    try {
+      const [statsRes, leadsRes] = await Promise.all([
+        api.get("/inquiry/dashboard"),
+        api.get("/inquiry"),
+      ]);
+
+      setStats(statsRes.data.data);
+
+      setRecentLeads(leadsRes.data.data.slice(0, 5));
+    } catch (err) {
+      console.log(err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const cards = [
+    {
+      title: "Total Leads",
+      value: stats.total,
+      icon: Users,
+      gradient: "from-cyan-500 to-sky-500",
+    },
+    {
+      title: "Contacted",
+      value: stats.contacted,
+      icon: PhoneCall,
+      gradient: "from-yellow-400 to-orange-500",
+    },
+    {
+      title: "Demo Scheduled",
+      value: stats.demoScheduled,
+      icon: CalendarCheck,
+      gradient: "from-violet-500 to-fuchsia-500",
+    },
+    {
+      title: "Closed",
+      value: stats.closed,
+      icon: BadgeCheck,
+      gradient: "from-emerald-500 to-green-500",
+    },
+  ];
+
+  if (loading) {
+    return (
+      <div className="py-20 text-center text-lg font-semibold">
+        Loading Dashboard...
+      </div>
+    );
+  }
+
   return (
-    <div className="p-8">
+    <div className="space-y-8">
 
-      <h1 className="text-3xl font-bold">
-        Dashboard
-      </h1>
+      {/* Welcome */}
 
-      <p className="text-gray-500 mt-1 mb-8">
-        Welcome back 👋 Here's today's overview.
-      </p>
+      <div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
+        <p className="text-sm font-semibold uppercase tracking-widest text-cyan-600">
+          Overview
+        </p>
 
-        {stats.map((item) => {
-          const Icon = item.icon;
+        <h2 className="mt-2 text-3xl font-bold text-slate-900">
+          Welcome back 👋
+        </h2>
+
+        <p className="mt-2 text-slate-500">
+          Here's a quick overview of your CRM today.
+        </p>
+
+      </div>
+
+      {/* Cards */}
+
+      <div className="grid gap-6 sm:grid-cols-2 xl:grid-cols-4">
+
+        {cards.map((card) => {
+          const Icon = card.icon;
 
           return (
             <div
-              key={item.title}
-              className="bg-white rounded-xl shadow p-6"
+              key={card.title}
+              className="group rounded-3xl border border-white bg-white p-6 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-xl"
             >
-              <div className="flex justify-between">
+              <div className="flex items-center justify-between">
 
                 <div>
-                  <p className="text-gray-500">
-                    {item.title}
+
+                  <p className="text-sm font-medium text-slate-500">
+                    {card.title}
                   </p>
 
-                  <h2 className="text-3xl font-bold mt-2">
-                    {item.value}
-                  </h2>
+                  <h3 className="mt-3 text-4xl font-bold text-slate-900">
+                    {card.value}
+                  </h3>
+
                 </div>
 
-                <div className={`${item.color} p-4 rounded-full text-white`}>
-                  <Icon size={28} />
+                <div
+                  className={`flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-r ${card.gradient} text-white shadow-lg`}
+                >
+                  <Icon size={30} />
                 </div>
 
               </div>
+
+              <div className="mt-6 flex items-center gap-2 text-sm font-medium text-cyan-600">
+
+                <ArrowUpRight size={16} />
+
+                Live Data
+
+              </div>
+
             </div>
           );
         })}
+
       </div>
 
-      <div className="bg-white mt-10 rounded-xl shadow">
+      {/* Recent Leads */}
 
-        <div className="p-6 border-b">
-          <h2 className="text-xl font-bold">
-            Recent Leads
-          </h2>
+      <div className="rounded-3xl border border-slate-200 bg-white shadow-sm">
+
+        <div className="flex items-center justify-between border-b p-6">
+
+          <div>
+
+            <h2 className="text-2xl font-bold text-slate-900">
+              Recent Leads
+            </h2>
+
+            <p className="mt-1 text-sm text-slate-500">
+              Latest enquiries received from clinics.
+            </p>
+
+          </div>
+
         </div>
 
-        <table className="w-full">
+        <div className="overflow-x-auto">
 
-          <thead className="bg-gray-50">
+          <table className="min-w-full">
 
-            <tr>
-              <th className="text-left p-4">Name</th>
-              <th className="text-left p-4">Hospital</th>
-              <th className="text-left p-4">Status</th>
-            </tr>
+            <thead className="bg-slate-50">
 
-          </thead>
+              <tr>
 
-          <tbody>
+                <th className="px-6 py-4 text-left text-sm font-semibold">
+                  Name
+                </th>
 
-            {recentLeads.map((lead) => (
+                <th className="px-6 py-4 text-left text-sm font-semibold">
+                  Hospital
+                </th>
 
-              <tr
-                key={lead.name}
-                className="border-b"
-              >
-                <td className="p-4">{lead.name}</td>
-                <td className="p-4">{lead.hospital}</td>
-
-                <td className="p-4">
-                  <span className={`px-3 py-1 rounded-full text-sm ${badge(lead.status)}`}>
-                    {lead.status}
-                  </span>
-                </td>
+                <th className="px-6 py-4 text-left text-sm font-semibold">
+                  Status
+                </th>
 
               </tr>
 
-            ))}
+            </thead>
 
-          </tbody>
+            <tbody>
 
-        </table>
+              {recentLeads.map((lead) => (
+                <tr
+                  key={lead._id}
+                  className="border-t transition hover:bg-cyan-50/50"
+                >
+
+                  <td className="px-6 py-5 font-medium">
+                    {lead.name}
+                  </td>
+
+                  <td className="px-6 py-5 text-slate-600">
+                    {lead.hospital}
+                  </td>
+
+                  <td className="px-6 py-5">
+
+                    <span
+                      className={`rounded-full px-3 py-1 text-xs font-semibold ${badge(
+                        lead.status
+                      )}`}
+                    >
+                      {lead.status}
+                    </span>
+
+                  </td>
+
+                </tr>
+              ))}
+
+            </tbody>
+
+          </table>
+
+        </div>
 
       </div>
 

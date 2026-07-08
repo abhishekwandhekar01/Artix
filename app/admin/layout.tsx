@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useRouter, usePathname } from "next/navigation";
 
 import Sidebar from "@/components/admin/Sidebar";
@@ -14,8 +14,9 @@ export default function AdminLayout({
   const router = useRouter();
   const pathname = usePathname();
 
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+
   useEffect(() => {
-    // Don't check auth on login page
     if (pathname === "/admin/login") return;
 
     const token = localStorage.getItem("token");
@@ -25,20 +26,39 @@ export default function AdminLayout({
     }
   }, [router, pathname]);
 
-  // Login page should NOT show sidebar/navbar
   if (pathname === "/admin/login") {
     return <>{children}</>;
   }
 
   return (
-    <div className="flex">
-      <Sidebar />
+    <div className="min-h-screen bg-slate-100">
 
-      <div className="ml-72 flex-1 min-h-screen bg-slate-100">
-        <Navbar />
+      <Sidebar
+        open={sidebarOpen}
+        setOpen={setSidebarOpen}
+      />
 
-        <main className="p-8">{children}</main>
+      {sidebarOpen && (
+        <div
+          onClick={() => setSidebarOpen(false)}
+          className="fixed inset-0 z-40 bg-black/40 backdrop-blur-sm lg:hidden"
+        />
+      )}
+
+      <div className="flex-1 lg:ml-64 p-4">
+
+        <Navbar
+          toggleSidebar={() =>
+            setSidebarOpen(!sidebarOpen)
+          }
+        />
+
+        <main className="mt-4 rounded-3xl">
+          {children}
+        </main>
+
       </div>
+
     </div>
   );
 }

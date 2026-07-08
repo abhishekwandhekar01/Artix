@@ -5,6 +5,17 @@ import { useParams } from "next/navigation";
 import api from "@/lib/axios";
 import toast from "react-hot-toast";
 
+import {
+  User,
+  Mail,
+  Phone,
+  Building2,
+  MapPin,
+  Calendar,
+  FileText,
+  Save,
+} from "lucide-react";
+
 type Inquiry = {
   _id: string;
   name: string;
@@ -39,7 +50,7 @@ export default function InquiryDetailsPage() {
         setStatus(res.data.data.status);
       }
     } catch (err) {
-      console.error(err);
+      console.log(err);
       toast.error("Failed to fetch inquiry");
     } finally {
       setLoading(false);
@@ -50,16 +61,16 @@ export default function InquiryDetailsPage() {
     try {
       setSaving(true);
 
-      const res = await api.put(`/inquiry/${id}`, {
+      const res = await api.patch(`/inquiry/${id}`, {
         status,
       });
 
       if (res.data.success) {
-        toast.success("Status updated successfully");
+        toast.success("Status Updated");
       }
     } catch (err) {
-      console.error(err);
-      toast.error("Failed to update status");
+      console.log(err);
+      toast.error("Failed to update");
     } finally {
       setSaving(false);
     }
@@ -67,7 +78,7 @@ export default function InquiryDetailsPage() {
 
   if (loading) {
     return (
-      <div className="p-8 text-xl font-semibold">
+      <div className="py-24 text-center text-lg font-semibold">
         Loading...
       </div>
     );
@@ -75,96 +86,103 @@ export default function InquiryDetailsPage() {
 
   if (!inquiry) {
     return (
-      <div className="p-8">
+      <div className="py-24 text-center">
         Inquiry not found.
       </div>
     );
   }
 
   return (
-    <div className="p-8">
+    <div className="space-y-8">
 
-      <h1 className="text-3xl font-bold mb-8">
-        Lead Details
-      </h1>
+      {/* Header */}
 
-      <div className="bg-white rounded-2xl shadow p-8 max-w-5xl">
+      <div>
 
-        <div className="grid md:grid-cols-2 gap-6">
+        <p className="text-sm font-semibold uppercase tracking-widest text-cyan-600">
+          Lead Details
+        </p>
 
-          <div>
-            <p className="text-gray-500">Name</p>
-            <h2 className="font-semibold text-lg">
-              {inquiry.name}
-            </h2>
-          </div>
+        <h1 className="mt-2 text-3xl font-bold text-slate-900">
+          {inquiry.name}
+        </h1>
 
-          <div>
-            <p className="text-gray-500">Email</p>
-            <h2 className="font-semibold">
-              {inquiry.email}
-            </h2>
-          </div>
+        <p className="mt-2 text-slate-500">
+          Review and manage this enquiry.
+        </p>
 
-          <div>
-            <p className="text-gray-500">Phone</p>
-            <h2 className="font-semibold">
-              {inquiry.phone}
-            </h2>
-          </div>
+      </div>
 
-          <div>
-            <p className="text-gray-500">Hospital</p>
-            <h2 className="font-semibold">
-              {inquiry.hospital}
-            </h2>
-          </div>
+      {/* Information */}
 
-          <div>
-            <p className="text-gray-500">City</p>
-            <h2 className="font-semibold">
-              {inquiry.city}
-            </h2>
-          </div>
+      <div className="rounded-3xl border border-slate-200 bg-white p-8 shadow-sm">
 
-          <div>
-            <p className="text-gray-500">
-              Created
-            </p>
+        <h2 className="mb-8 text-xl font-bold">
+          Contact Information
+        </h2>
 
-            <h2 className="font-semibold">
-              {new Date(
-                inquiry.createdAt
-              ).toLocaleString()}
-            </h2>
-          </div>
+        <div className="grid gap-6 md:grid-cols-2">
+
+          <InfoCard icon={<User size={18} />} title="Name" value={inquiry.name} />
+
+          <InfoCard icon={<Mail size={18} />} title="Email" value={inquiry.email} />
+
+          <InfoCard icon={<Phone size={18} />} title="Phone" value={inquiry.phone} />
+
+          <InfoCard
+            icon={<Building2 size={18} />}
+            title="Hospital"
+            value={inquiry.hospital}
+          />
+
+          <InfoCard icon={<MapPin size={18} />} title="City" value={inquiry.city} />
+
+          <InfoCard
+            icon={<Calendar size={18} />}
+            title="Created"
+            value={new Date(inquiry.createdAt).toLocaleString()}
+          />
 
         </div>
 
-        <div className="mt-8">
+      </div>
 
-          <p className="text-gray-500 mb-2">
+      {/* Message */}
+
+      <div className="rounded-3xl border border-slate-200 bg-white p-8 shadow-sm">
+
+        <div className="mb-4 flex items-center gap-2">
+
+          <FileText className="text-cyan-600" size={20} />
+
+          <h2 className="text-xl font-bold">
             Message
-          </p>
-
-          <div className="rounded-lg border bg-gray-50 p-4 whitespace-pre-wrap">
-            {inquiry.message}
-          </div>
+          </h2>
 
         </div>
 
-        <div className="mt-8">
+        <div className="rounded-2xl bg-slate-50 p-6 whitespace-pre-wrap leading-7 text-slate-700">
 
-          <label className="block mb-2 font-semibold">
-            Lead Status
-          </label>
+          {inquiry.message || "No message provided."}
+
+        </div>
+
+      </div>
+
+      {/* Status */}
+
+      <div className="rounded-3xl border border-slate-200 bg-white p-8 shadow-sm">
+
+        <h2 className="mb-6 text-xl font-bold">
+          Lead Status
+        </h2>
+
+        <div className="flex flex-col gap-6 md:flex-row md:items-center">
 
           <select
             value={status}
-            onChange={(e) =>
-              setStatus(e.target.value)
-            }
-            className="border rounded-lg px-4 py-3 w-72"
+            onChange={(e) => setStatus(e.target.value)}
+            className="rounded-xl border border-slate-200 px-4 py-3 outline-none focus:border-cyan-500"
           >
             <option>New</option>
             <option>Contacted</option>
@@ -172,17 +190,51 @@ export default function InquiryDetailsPage() {
             <option>Closed</option>
           </select>
 
+          <button
+            onClick={updateStatus}
+            disabled={saving}
+            className="inline-flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-cyan-500 to-sky-500 px-8 py-3 font-semibold text-white transition hover:scale-105 disabled:opacity-50"
+          >
+
+            <Save size={18} />
+
+            {saving ? "Saving..." : "Save Changes"}
+
+          </button>
+
         </div>
 
-        <button
-          onClick={updateStatus}
-          disabled={saving}
-          className="mt-8 bg-teal-600 hover:bg-teal-700 text-white px-8 py-3 rounded-lg transition"
-        >
-          {saving ? "Updating..." : "Save Changes"}
-        </button>
+      </div>
+
+    </div>
+  );
+}
+
+function InfoCard({
+  icon,
+  title,
+  value,
+}: {
+  icon: React.ReactNode;
+  title: string;
+  value: string;
+}) {
+  return (
+    <div className="rounded-2xl bg-slate-50 p-5">
+
+      <div className="mb-3 flex items-center gap-2 text-cyan-600">
+
+        {icon}
+
+        <span className="text-sm font-semibold">
+          {title}
+        </span>
 
       </div>
+
+      <p className="break-words text-lg font-semibold text-slate-900">
+        {value}
+      </p>
 
     </div>
   );
