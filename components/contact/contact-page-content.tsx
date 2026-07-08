@@ -89,34 +89,34 @@ const CONTACT_METHODS: {
   hint: string;
   href?: string;
 }[] = [
-  {
-    icon: Mail,
-    title: "Email Us",
-    value: siteConfig.contact.email,
-    href: `mailto:${siteConfig.contact.email}`,
-    hint: "Product & demo inquiries",
-  },
-  {
-    icon: Phone,
-    title: "Call Us",
-    value: siteConfig.contact.phone,
-    href: `tel:${siteConfig.contact.phone.replace(/\s/g, "")}`,
-    hint: "Mon–Sat, 9 AM – 7 PM IST",
-  },
-  {
-    icon: MessageCircle,
-    title: "WhatsApp",
-    value: "Chat with our team",
-    href: `https://wa.me/${siteConfig.contact.whatsapp.replace(/[^0-9]/g, "")}`,
-    hint: "Quick responses",
-  },
-  {
-    icon: MapPin,
-    title: "Visit Us",
-    value: siteConfig.contact.address,
-    hint: siteConfig.contact.cityHint,
-  },
-];
+    {
+      icon: Mail,
+      title: "Email Us",
+      value: siteConfig.contact.email,
+      href: `mailto:${siteConfig.contact.email}`,
+      hint: "Product & demo inquiries",
+    },
+    {
+      icon: Phone,
+      title: "Call Us",
+      value: siteConfig.contact.phone,
+      href: `tel:${siteConfig.contact.phone.replace(/\s/g, "")}`,
+      hint: "Mon–Sat, 9 AM – 7 PM IST",
+    },
+    {
+      icon: MessageCircle,
+      title: "WhatsApp",
+      value: "Chat with our team",
+      href: `https://wa.me/${siteConfig.contact.whatsapp.replace(/[^0-9]/g, "")}`,
+      hint: "Quick responses",
+    },
+    {
+      icon: MapPin,
+      title: "Visit Us",
+      value: siteConfig.contact.address,
+      hint: siteConfig.contact.cityHint,
+    },
+  ];
 
 export function ContactPageContent() {
   const [submitted, setSubmitted] = useState(false);
@@ -131,7 +131,7 @@ export function ContactPageContent() {
   return (
     <>
       {/* Hero — premium, clean, airy */}
-      <section className="relative overflow-hidden pt-28">
+      <section className="relative overflow-hidden pt-20 sm:pt-24 lg:pt-28">
         <div className="absolute inset-0 bg-gradient-to-b from-primary-soft/80 via-background to-white" />
         <GradientMesh />
 
@@ -151,7 +151,7 @@ export function ContactPageContent() {
         <div className="pointer-events-none absolute -right-24 top-20 h-72 w-72 rounded-full bg-primary/10 blur-3xl" />
         <div className="pointer-events-none absolute -left-16 bottom-32 h-56 w-56 rounded-full bg-accent/10 blur-3xl" />
 
-        <div className="container-wide relative z-10 pb-16 pt-8 sm:pb-20 sm:pt-10">
+        <div className="container-wide relative z-10 px-4 sm:px-6 lg:px-8 pb-16 pt-8 sm:pb-20 sm:pt-10">
           <motion.div
             initial={{ opacity: 0, y: 24 }}
             animate={{ opacity: 1, y: 0 }}
@@ -198,7 +198,7 @@ export function ContactPageContent() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2, duration: 0.55 }}
-            className="mx-auto mt-10 grid max-w-4xl gap-4 sm:grid-cols-3"
+            className="mx-auto mt-10 grid max-w-4xl grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3"
           >
             {CONTACT_METHODS.slice(0, 3).map((item, i) => (
               <motion.a
@@ -229,10 +229,10 @@ export function ContactPageContent() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.45 }}
-            className="mx-auto mt-6 flex max-w-2xl items-start justify-center gap-2 rounded-2xl border border-primary/10 bg-white/70 px-4 py-3 text-center shadow-sm backdrop-blur-sm"
+            className="mx-auto mt-6 flex max-w-2xl flex-col items-center gap-3 rounded-2xl border border-primary/10 bg-white/70 px-4 py-3 text-center shadow-sm backdrop-blur-sm sm:flex-row sm:items-start sm:justify-center"
           >
             <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-primary" />
-            <p className="text-left text-xs leading-relaxed text-gray sm:text-sm">
+            <p className="text-center text-xs leading-relaxed text-gray sm:text-left sm:text-sm break-words">
               <span className="font-semibold text-text">{siteConfig.contact.cityHint} Office · </span>
               {siteConfig.contact.address}
             </p>
@@ -275,13 +275,13 @@ export function ContactPageContent() {
                 ))}
               </ul>
 
-              <div className="mt-8 grid gap-3 sm:grid-cols-2">
+              <div className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-2">
                 {CONTACT_METHODS.map((item) => (
                   <div
                     key={item.title}
-                    className="rounded-2xl border border-slate-100 bg-slate-50/80 p-4 transition hover:border-primary/20 hover:shadow-md"
+                    className="rounded-2xl border border-slate-100 bg-slate-50/80 p-4 sm:p-5 transition hover:border-primary/20 hover:shadow-md"
                   >
-                    <div className="mb-2 flex h-9 w-9 items-center justify-center rounded-xl bg-primary/10 text-primary">
+                    <div className="mb-2 flex h-10 w-10 items-center justify-center rounded-xl bg-primary/10 text-primary sm:h-11 sm:w-11">
                       <item.icon className="h-4 w-4" />
                     </div>
                     <p className="text-sm font-bold text-text">{item.title}</p>
@@ -329,13 +329,13 @@ export function ContactPageContent() {
               transition={{ duration: 0.5 }}
               className="scroll-mt-28"
             >
-              <div className="rounded-2xl border border-slate-100 bg-white p-6 shadow-xl ring-1 ring-primary/5 sm:p-8">
+              <div className="rounded-2xl border border-slate-100 bg-white p-5 sm:p-6 lg:p-8 shadow-xl ring-1 ring-primary/5">
                 <div className="mb-6 border-b border-slate-100 pb-5">
                   <span className="inline-flex items-center gap-1.5 rounded-full bg-primary-soft px-3 py-1 text-[11px] font-bold uppercase tracking-wider text-primary">
                     <Sparkles className="h-3 w-3" />
                     Book Free Demo
                   </span>
-                  <h3 className="mt-3 text-xl font-extrabold text-text sm:text-2xl">
+                  <h3 className="mt-3 text-lg sm:text-xl lg:text-2xl font-extrabold text-text">
                     Schedule Your Walkthrough
                   </h3>
                   <p className="mt-1.5 text-sm leading-relaxed text-gray">
@@ -407,7 +407,7 @@ export function ContactPageContent() {
                     </div>
                     <div>
                       <Label className="mb-2 block">Modules of interest</Label>
-                      <div className="flex flex-wrap gap-1.5">
+                      <div className="flex flex-wrap gap-2">
                         {demoFormModules.map((m) => (
                           <button
                             key={m}
@@ -417,11 +417,10 @@ export function ContactPageContent() {
                                 p.includes(m) ? p.filter((x) => x !== m) : [...p, m]
                               )
                             }
-                            className={`rounded-full px-2.5 py-1 text-[11px] font-bold transition ${
-                              selectedModules.includes(m)
-                                ? "bg-primary text-white"
-                                : "border border-slate-200 text-gray hover:border-primary/30"
-                            }`}
+                            className={`rounded-full px-3 py-2 text-xs font-semibold transition-all duration-200 ${selectedModules.includes(m)
+                              ? "bg-primary text-white shadow-sm"
+                              : "border border-slate-200 text-gray hover:border-primary/30 hover:bg-primary/5"
+                              }`}
                           >
                             {m}
                           </button>
@@ -461,7 +460,7 @@ export function ContactPageContent() {
             viewport={{ once: true }}
             className="mt-14 overflow-hidden rounded-2xl border border-slate-100 premium-shadow ring-1 ring-primary/5"
           >
-            <div className="flex flex-col gap-3 border-b border-slate-100 bg-gradient-to-r from-primary-soft/60 to-white px-5 py-5 sm:flex-row sm:items-center sm:justify-between">
+            <div className="flex flex-col gap-4 border-b border-slate-100 bg-gradient-to-r from-primary-soft/60 to-white px-4 py-4 sm:px-5 sm:py-5 lg:flex-row lg:items-center lg:justify-between">
               <div className="flex items-start gap-3">
                 <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl gradient-brand text-white shadow-md">
                   <MapPin className="h-4 w-4" />
@@ -473,13 +472,23 @@ export function ContactPageContent() {
                   </p>
                 </div>
               </div>
-              <div className="flex flex-wrap gap-2">
-                <Button variant="outline" size="sm" asChild>
+              <div className="flex w-full flex-col gap-2 sm:w-auto sm:flex-row">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="w-full sm:w-auto"
+                  asChild
+                >
                   <a href={`tel:${siteConfig.contact.phone.replace(/\s/g, "")}`}>
                     <Phone className="h-3.5 w-3.5" /> Call
                   </a>
                 </Button>
-                <Button variant="outline" size="sm" asChild>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="w-full sm:w-auto"
+                  asChild
+                >
                   <Link
                     href={`https://wa.me/${siteConfig.contact.whatsapp.replace(/[^0-9]/g, "")}`}
                     target="_blank"
@@ -493,11 +502,11 @@ export function ContactPageContent() {
               title="ARTiX Office Location"
               src={siteConfig.contact.mapEmbedUrl}
               width="100%"
-              height="320"
+              height="280"
               style={{ border: 0 }}
               allowFullScreen
               loading="lazy"
-              className="grayscale transition-all duration-500 hover:grayscale-0"
+              className="h-[280px] sm:h-[320px] w-full grayscale transition-all duration-500 hover:grayscale-0"
             />
           </motion.div>
         </div>

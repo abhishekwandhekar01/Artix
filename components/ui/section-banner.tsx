@@ -21,8 +21,8 @@ const overlayClass = {
 };
 
 const heightClass = {
-  md: "min-h-[320px]",
-  lg: "min-h-[420px]",
+  md: "min-h-[260px] sm:min-h-[320px]",
+  lg: "min-h-[340px] sm:min-h-[420px]",
   auto: "min-h-0",
 };
 
@@ -36,19 +36,37 @@ export function SectionBanner({
   height = "auto",
 }: SectionBannerProps) {
   return (
-    <div className={cn("relative overflow-hidden", heightClass[height], className)}>
+    <div
+      className={cn(
+        "relative overflow-hidden",
+        heightClass[height],
+        className
+      )}
+    >
+      {/* Background Image */}
       <div className="absolute inset-0">
         <SafeImage
-        src={image}
-        fallbackSrc={fallback}
-        alt={alt}
-        fill
-        className="object-cover scale-105"
-        sizes="100vw"
+          src={image}
+          fallbackSrc={fallback}
+          alt={alt}
+          fill
+          className="object-cover scale-105"
+          sizes="100vw"
         />
       </div>
-      <div className={cn("absolute inset-0 bg-gradient-to-br", overlayClass[overlay])} />
-      <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGlsbD0iI2ZmZiIgZmlsbC1vcGFjaXR5PSIwLjAzIj48cGF0aCBkPSJNMzYgMzRoLTJ2LTRoMnY0em0wLTZoLTJWNHloMnY0em0tNiA2aC00VjIwaDR2NGgtNHYyaDR2LTJ6bTAgNGgtNHYyaDR2LTJ6bTEwLTZoLTJ2LTRoMnY0em0wLTZoLTJWNHloMnY0em0tNiA2aC00VjIwaDR2NGgtNHYyaDR2LTJ6bTAgNGgtNHYyaDR2LTJ6Ii8+PC9nPjwvZz48L3N2Zz4=')] opacity-30" />
+
+      {/* Gradient Overlay */}
+      <div
+        className={cn(
+          "absolute inset-0 bg-gradient-to-br",
+          overlayClass[overlay]
+        )}
+      />
+
+      {/* Pattern Overlay */}
+      <div className="absolute inset-0 opacity-30 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiNmZmYiIGZpbGwtb3BhY2l0eT0iMC4wMyI+PHBhdGggZD0iTTM2IDM0aC0ydi00aDJ2NHptMC02aC0yVjRoMnY0em0tNiA2aC00VjIwaDR2NGgtNHYyaDR2LTJ6bTAgNGgtNHYyaDR2LTJ6bTEwLTZoLTJ2LTRoMnY0em0wLTZoLTJWNHloMnY0em0tNiA2aC00VjIwaDR2NGgtNHYyaDR2LTJ6bTAgNGgtNHYyaDR2LTJ6Ii8+PC9nPjwvZz48L3N2Zz4=')]" />
+
+      {/* Content */}
       <motion.div
         initial={false}
         whileInView={{ opacity: 1, y: 0 }}

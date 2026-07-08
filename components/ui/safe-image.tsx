@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Image, { type ImageProps } from "next/image";
 import { cn } from "@/lib/utils";
 
@@ -10,7 +10,7 @@ interface SafeImageProps extends Omit<ImageProps, "onError"> {
 
 export function SafeImage({
   src,
-  fallbackSrc,
+ fallbackSrc,
   alt,
   className,
   ...props
@@ -18,18 +18,26 @@ export function SafeImage({
   const [currentSrc, setCurrentSrc] = useState(src);
   const [failed, setFailed] = useState(false);
 
+  useEffect(() => {
+    setCurrentSrc(src);
+    setFailed(false);
+  }, [src]);
+
   if (failed) {
     return (
       <div
         className={cn(
-          "flex items-center justify-center bg-gradient-to-br from-primary/10 to-primary-light/10",
+          "flex h-full w-full items-center justify-center rounded-inherit bg-gradient-to-br from-primary/10 to-primary-light/10 p-4",
           className
         )}
+        role="img"
         aria-label={alt}
       >
-        <div className="text-center p-4">
-          <div className="mx-auto mb-2 h-10 w-10 rounded-full bg-primary/20" />
-          <p className="text-xs font-medium text-primary/60">{alt}</p>
+        <div className="text-center">
+          <div className="mx-auto mb-2 h-8 w-8 rounded-full bg-primary/20 sm:h-10 sm:w-10" />
+          <p className="text-[11px] sm:text-xs font-medium text-primary/60 break-words">
+            {alt}
+          </p>
         </div>
       </div>
     );

@@ -20,12 +20,16 @@ export default function LayoutWrapper({
   }
 
   return (
-    <>
+    <div className="flex min-h-screen flex-col">
       <Navigation />
-      <main>{children}</main>
+
+      <main className="flex-1">
+        {children}
+      </main>
+
       <Footer />
       <StickyCTA />
       <ArtixChatbot />
-    </>
+    </div>
   );
 }
